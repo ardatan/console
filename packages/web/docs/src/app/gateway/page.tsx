@@ -21,12 +21,13 @@ export const metadata: Metadata = {
 
 export default function HiveGatewayPage() {
   return (
-    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden px-6">
+    <LandingPageContainer className="text-green-1000 light mx-auto max-w-[90rem] overflow-hidden">
       <Hero
         logo={<HiveGatewayIcon />}
         heading="Hive Gateway"
         text="Unify and accelerate your data graph across diverse services with Hive Gateway, which seamlessly integrates with Apollo Federation."
         checkmarks={['Fully open source', 'No vendor lock-in', 'Can be self-hosted!']}
+        className="mx-4 md:mx-6"
       >
         <CallToAction variant="primary" href="/docs/gateway">
           Get Started
@@ -41,7 +42,7 @@ export default function HiveGatewayPage() {
       {/* Federation-Compatible Gateway Benchmarks */}
       {/* Let's get advanced */}
       {/* Cloud-Native Nature */}
-      <ExploreMainProductCards />
+      <ExploreMainProductCards className="max-lg:mx-4 max-lg:my-8" />
       {/* big get your API game right section */}
     </LandingPageContainer>
   );
