@@ -37,6 +37,7 @@ export default function HiveGatewayPage() {
         </CallToAction>
         {/* TODO: decoration */}
       </Hero>
+      <GatewayFeatureTabs />
       {/* observability and performance monitoring */}
       {/* orchestrate your way */}
       {/* Federation-Compatible Gateway Benchmarks */}

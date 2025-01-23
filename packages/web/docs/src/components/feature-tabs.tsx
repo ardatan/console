@@ -11,7 +11,7 @@ import { ArrowIcon } from './arrow-icon';
 export type Highlight = {
   title: string;
   description: string;
-  image: StaticImageData;
+  image?: StaticImageData;
   link?: string;
 };
 
@@ -83,13 +83,16 @@ interface FeatureProps {
   description: string;
   highlights: Highlight[];
   documentationLink?: string;
-  noImage?: boolean;
   setActiveHighlight: (highlight: string) => void;
 }
 
-function Feature(props: FeatureProps) {
-  const { title, description, documentationLink, highlights } = props;
-
+function Feature({
+  title,
+  description,
+  documentationLink,
+  highlights,
+  setActiveHighlight,
+}: FeatureProps) {
   return (
     <div className="flex flex-col gap-6 px-4 pb-4 md:gap-12 md:pb-12 md:pl-12 md:pr-16">
       <header className="flex flex-wrap items-center gap-4 md:flex-col md:items-start md:gap-6">
@@ -106,7 +109,7 @@ function Feature(props: FeatureProps) {
                 href={highlight.link}
                 key={i}
                 title={'Learn more about ' + highlight.title}
-                onPointerOver={() => props.setActiveHighlight(highlight.title)}
+                onPointerOver={() => setActiveHighlight(highlight.title)}
                 className="hover:bg-beige-100 -m-2 block rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
               >
                 <dt className="text-green-1000 font-medium">{highlight.title}</dt>
@@ -118,7 +121,7 @@ function Feature(props: FeatureProps) {
           return (
             <div
               key={i}
-              onPointerOver={() => props.setActiveHighlight(highlight.title)}
+              onPointerOver={() => setActiveHighlight(highlight.title)}
               className="hover:bg-beige-100 -m-2 rounded-lg p-2 md:-m-4 md:rounded-xl md:p-4"
             >
               <dt className="text-green-1000 font-medium">{highlight.title}</dt>
@@ -131,7 +134,7 @@ function Feature(props: FeatureProps) {
         <CallToAction variant="primary" href={documentationLink}>
           Learn more
           <span className="sr-only">
-            {/* descriptive text for screen readers and SEO audits */} about {props.title}
+            {/* descriptive text for screen readers and SEO audits */} about {title}
           </span>
           <ArrowIcon />
         </CallToAction>
@@ -221,13 +224,7 @@ function useSmallScreenTabsHandlers() {
 
 export interface FeatureTabProps extends Omit<FeatureProps, 'setActiveHighlight'> {}
 
-export function FeatureTab({
-  title,
-  highlights,
-  description,
-  documentationLink,
-  noImage,
-}: FeatureTabProps) {
+export function FeatureTab({ title, highlights, description, documentationLink }: FeatureTabProps) {
   const { setActiveHighlight } = useFeatureTabsContext();
 
   return (
@@ -243,7 +240,6 @@ export function FeatureTab({
         description={description}
         documentationLink={documentationLink}
         highlights={highlights}
-        noImage={noImage}
         setActiveHighlight={setActiveHighlight}
       />
     </Tabs.Content>
@@ -272,24 +268,27 @@ export function ActiveHighlightImage() {
 
   return (
     <div className="relative mx-4 h-full flex-1 overflow-hidden rounded-3xl bg-blue-400 max-sm:h-[290px] sm:min-h-[400px] md:ml-6 md:mr-0">
-      {allHighlights.map((highlight, i) => (
-        <div
-          key={i}
-          data-current={activeHighlight === highlight.title}
-          className="absolute inset-0 opacity-0 transition delay-150 duration-150 ease-linear data-[current=true]:z-10 data-[current=true]:opacity-100 data-[current=true]:delay-0"
-        >
-          <Image
-            width={925} // max rendered width is 880px
-            height={578} // max rendered height is 618px, and the usual is 554px
-            src={highlight.image}
-            placeholder="blur"
-            blurDataURL={highlight.image.blurDataURL}
-            className="absolute left-6 top-[24px] h-[calc(100%-24px)] rounded-tl-3xl object-cover object-left lg:left-[55px] lg:top-[108px] lg:h-[calc(100%-108px)]"
-            role="presentation"
-            alt=""
-          />
-        </div>
-      ))}
+      {allHighlights.map(
+        (highlight, i) =>
+          highlight.image && (
+            <div
+              key={i}
+              data-current={activeHighlight === highlight.title}
+              className="absolute inset-0 opacity-0 transition delay-150 duration-150 ease-linear data-[current=true]:z-10 data-[current=true]:opacity-100 data-[current=true]:delay-0"
+            >
+              <Image
+                width={925} // max rendered width is 880px
+                height={578} // max rendered height is 618px, and the usual is 554px
+                src={highlight.image}
+                placeholder="blur"
+                blurDataURL={highlight.image.blurDataURL}
+                className="absolute left-6 top-[24px] h-[calc(100%-24px)] rounded-tl-3xl object-cover object-left lg:left-[55px] lg:top-[108px] lg:h-[calc(100%-108px)]"
+                role="presentation"
+                alt=""
+              />
+            </div>
+          ),
+      )}
     </div>
   );
 }

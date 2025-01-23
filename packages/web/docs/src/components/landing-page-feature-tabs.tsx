@@ -112,7 +112,6 @@ export function LandingPageFeatureTabs({ className }: LandingPageFeatureTabsProp
         documentationLink="/docs/gateway"
         description="Entry point to your distributed data graph."
         highlights={highlights['GraphQL Gateway']}
-        noImage
       />
       <ActiveHighlightImage />
     </FeatureTabs>
